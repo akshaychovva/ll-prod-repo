@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: llm-postgres
+    environment:
+      POSTGRES_DB: llm_app
+      POSTGRES_USER: llm_user
+      POSTGRES_PASSWORD: llm_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: llm-backend
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: llm_app
+      POSTGRES_USER: llm_user
+      POSTGRES_PASSWORD: llm_password
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      BEDROCK_MODEL_ID: ${BEDROCK_MODEL_ID:-anthropic.claude-3-haiku-20240307-v1:0}
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    volumes:
+      - ~/.aws:/root/.aws:ro
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: llm-frontend
+    environment:
+      BACKEND_URL: http://backend:5000
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-frontend
+  labels:
+    app: llm-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llm-frontend
+  template:
+    metadata:
+      labels:
+        app: llm-frontend
+    spec:
+      containers:
+        - name: llm-frontend
+          image: your-dockerhub-username/llm-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8501
+          env:
+            - name: BACKEND_URL
+              value: "http://llm-backend:5000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llm-frontend
+spec:
+  type: LoadBalancer
+  selector:
+    app: llm-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8501
+
