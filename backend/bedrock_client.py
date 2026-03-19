@@ -11,8 +11,8 @@ _client = None
 def get_bedrock_client():
     global _client  # noqa: PLW0603
     if _client is None:
-        region = os.getenv("AWS_REGION", "us-east-1")
-        _client = boto3.client("bedrock-runtime", region_name=region)
+        region = os.getenv("AWS_REGION", "eu-north-1")
+        _client = boto3.client("bedrock-runtime", region_name="us-east-1")
     return _client
 
 
@@ -27,9 +27,8 @@ def call_bedrock(
     Universal function that works with ANY Bedrock model
     """
     if model_id is None:
-        model_id = os.getenv("BEDROCK_MODEL_ID", "us.amazon.nova-pro-v1:0")
+        model_id = os.getenv("BEDROCK_MODEL_ID", "amazon.nova-pro-v1:0")
         custom_logger.info(f'model id is {model_id}')
-        model_id = "us.amazon.nova-pro-v1:0"
     
     client = get_bedrock_client()
     
