@@ -32,3 +32,4 @@ build/
 Thumbs.db
 newkey
 newkey.pub
+local_deploy
