@@ -76,4 +76,4 @@ They will need to:
 - **Push**: source code, Dockerfiles, docker-compose, docs, deploy guides.
 - **Never push**: `.env`, `venv/`, `.pem`, AWS keys, `__pycache__`, IDE junk.
 
-Next: `02_prepare_gitignore_and_structure.md` to make sure `.gitignore` is correct and your structure is ready.
+Next: `02_prepare_gitignore_and_structure.md` to make sure `.gitignore` is correct and your structure is ready.s
